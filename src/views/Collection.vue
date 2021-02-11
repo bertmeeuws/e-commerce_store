@@ -2,15 +2,21 @@
   <section>
     <h2 class="title">Men's clothes</h2>
     <div class="grid">
-      <ClothingItem />
+      <clothing-item
+        v-for="(item, index) in state.items"
+        v-bind:item="item"
+        v-bind:index="index"
+        v-bind:key="item.id"
+      />
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, reactive } from "vue";
 import ClothingItem from "@/components/ClothingItem.vue";
 import { ClothingApi } from "@/services/UsersApi";
+import { ClothingItemState } from "@/interfaces/ClothingItem.types";
 
 export default defineComponent({
   name: "Collection",
@@ -18,9 +24,19 @@ export default defineComponent({
   components: {
     ClothingItem,
   },
-  async mounted(): Promise<void> {
-    const response = await ClothingApi.getAllClothing();
-    console.log(response)
+  setup() {
+    const state = reactive<ClothingItemState>({
+      items: null,
+    });
+
+    onMounted(async () => {
+      const response = await ClothingApi.getAllClothing();
+      state.items = response;
+      console.log(state.items);
+    });
+    return {
+      state,
+    };
   },
 });
 </script>
