@@ -1,8 +1,11 @@
 <template>
   <nav>
-    <h1>E-Commerce Store</h1>
-    <router-link to="/collection/men">Men</router-link>
-    <router-link to="/collection/women">Women</router-link>
+    <div>
+      <router-link to="/"><h1>E-Commerce Store</h1></router-link>
+      <router-link to="/collection/men">Men</router-link>
+      <router-link to="/collection/women">Women</router-link>
+    </div>
+    <div><router-link to="/cart">Cart</router-link></div>
   </nav>
 </template>
 
@@ -19,6 +22,13 @@ export default defineComponent({
 <style scoped>
 nav {
   display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+nav div {
+  display: flex;
   align-items: center;
   flex-direction: row;
 }
@@ -27,6 +37,9 @@ nav a {
   text-decoration: none;
   color: black;
   transition: all 0.2s ease-in-out;
+}
+nav a:first-child {
+  margin-left: 0rem;
 }
 nav a:hover {
   color: #42b983;

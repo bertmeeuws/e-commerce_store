@@ -12,3 +12,4 @@ export abstract class ClothingApi {
     return response.data;
   }
 }
+

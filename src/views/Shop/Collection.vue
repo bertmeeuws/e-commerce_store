@@ -1,12 +1,13 @@
 <template>
   <section>
     <h2 class="title">Men's clothes</h2>
-    <div class="grid">
+    <div v-if="state.items !== null" class="grid">
       <clothing-item
         v-for="(item, index) in state.items"
         v-bind:item="item"
         v-bind:index="index"
-        v-bind:key="item.id"
+        v-bind:allItems="state.items"
+        :key="item.id"
       />
     </div>
   </section>
