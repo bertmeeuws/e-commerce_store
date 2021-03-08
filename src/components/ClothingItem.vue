@@ -20,12 +20,13 @@ import { ClothingItem } from "../interfaces/ClothingItem.types";
 export default defineComponent({
   name: "ClothingItem",
   props: {
-    item: { type: Object, default: null },
+    item: { type: Object, default: null, required: true },
   },
   components: {},
 
   setup(props) {
     const router = useRouter();
+   
 
     const navigate = () =>
       router.push({ path: `/collection/men/${props.item.id}` });

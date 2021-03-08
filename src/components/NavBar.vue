@@ -5,17 +5,27 @@
       <router-link to="/collection/men">Men</router-link>
       <router-link to="/collection/women">Women</router-link>
     </div>
-    <div><router-link to="/cart">Cart</router-link></div>
+    <div>
+      <router-link to="/cart">Cart ({{ length }})</router-link>
+    </div>
   </nav>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { useStore } from "vuex";
+import { defineComponent, computed } from "vue";
 //import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 
 export default defineComponent({
   name: "NavBar",
   components: {},
+
+  setup() {
+    const store = useStore();
+    return {
+      length: computed(() => store.state.cart.length),
+    };
+  },
 });
 </script>
 

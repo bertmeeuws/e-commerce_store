@@ -17,6 +17,7 @@
 import { defineComponent, onMounted, reactive } from "vue";
 import { ClothingApi } from "@/services/UsersApi";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "ClothingDetail",
@@ -28,11 +29,14 @@ export default defineComponent({
     });
 
     const router = useRouter();
+    const store = useStore();
 
     const idParam: number = Number(router.currentRoute.value.params.item);
 
     const addToCart = () => {
-      alert("added to cart");
+      if (state.item !== null) {
+        store.commit("addToCart", state.item);
+      }
     };
 
     onMounted(async () => {
@@ -54,11 +58,12 @@ export default defineComponent({
 
 <style scoped>
 .detail--grid {
-  margin-top: 10rem;
   display: grid;
-  grid-template-columns: 500px 500px;
-
+  grid-template-columns: 350px 500px;
+  margin: 0 auto;
+  width: calc(350px + 500px);
   text-align: left;
+  margin-top: 10rem;
 }
 .detail--image1 {
   display: flex;
