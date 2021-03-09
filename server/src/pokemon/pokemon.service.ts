@@ -2,8 +2,7 @@ import { inputPokemon } from './input/pokemon.input';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PokemonEntity } from './pokemon.entity';
-import { Repository, UpdateResult } from 'typeorm';
-import { CreatePokemonDto } from './dto/create-pokemon.dto';
+import { Repository } from 'typeorm';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 @Injectable()

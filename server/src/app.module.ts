@@ -5,11 +5,16 @@ import { PokemonModule } from './pokemon/pokemon.module';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      cors: {
+        credentials: true,
+        origin: true,
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -25,6 +30,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
     //Here come modules
     PokemonModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
