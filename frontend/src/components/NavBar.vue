@@ -7,6 +7,7 @@
     </div>
     <div>
       <router-link to="/cart">Cart ({{ length }})</router-link>
+      <router-link to="/login">Login</router-link>
     </div>
   </nav>
 </template>

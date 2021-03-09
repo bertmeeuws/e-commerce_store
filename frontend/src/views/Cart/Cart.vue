@@ -4,6 +4,7 @@
   <div class="cart--content" v-else>
     <div class="cart--item" v-for="(item, index) in cart" :key="index">
       <button @click="deleteItem(item.id)">X</button>
+      <img class="cart--item--img" :src="item.image" alt="" />
       <p>{{ item.title }}</p>
       <p>{{ item.count }}</p>
     </div>
@@ -38,6 +39,11 @@ export default defineComponent({
   display: flex;
   width: 50%;
   flex-direction: row;
+}
+.cart--item--img {
+  width: 20px;
+  height: auto;
+  margin-right: 2rem;
 }
 .cart--content {
   width: 1200px;

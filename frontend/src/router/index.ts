@@ -4,7 +4,6 @@ import Home from "../views/Home.vue";
 import Collection from "../views/Shop/Collection.vue";
 import NotFound from "../views/Misc/NotFound.vue";
 import ClothingDetail from "../views/Shop/ClothingDetail.vue";
-import Cart from "../views/Cart/Cart.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -12,6 +11,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Home",
     component: Home,
   },
+
   {
     path: "/about",
     name: "About",
@@ -22,12 +22,22 @@ const routes: Array<RouteRecordRaw> = [
       import(/* webpackChunkName: "about" */ "../views/Misc/About.vue"),
   },
   {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Auth/Login.vue"),
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("../views/Auth/Register.vue"),
+  },
+  {
     path: "/cart",
     name: "Cart",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: Cart,
+    component: () => import("../views/Cart/Cart.vue"),
   },
   {
     path: "/collection/:sex",

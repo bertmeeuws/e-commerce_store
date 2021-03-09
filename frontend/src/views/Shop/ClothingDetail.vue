@@ -46,7 +46,6 @@ export default defineComponent({
         router.push({ path: `/` });
       }
       state.item = item;
-      console.log(state.item);
     });
     return {
       state,
