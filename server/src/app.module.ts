@@ -15,6 +15,11 @@ import { AuthModule } from './auth/auth.module';
         credentials: true,
         origin: true,
       },
+      //Make sure req gets passed properly after Auth
+      context: ({ req, res }: any) => {
+        // Sets the "request" object for each GQL request to read headers for auth, etc
+        return { request: req };
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -24,11 +29,11 @@ import { AuthModule } from './auth/auth.module';
       password: 'root',
       database: 'postgres',
       entities: ['dist/**/*.entity{.ts,.js}'],
-
       synchronize: true,
     }),
 
     //Here come modules
+
     PokemonModule,
     AuthModule,
   ],

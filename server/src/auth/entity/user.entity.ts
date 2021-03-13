@@ -1,12 +1,14 @@
+import { ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
+@ObjectType('user')
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: 'varchar', length: 35, unique: true })
+  @Column({ type: 'varchar', unique: true })
   @IsEmail({}, { message: 'Incorrect email' })
   @IsNotEmpty({ message: 'The name is required' })
   email!: string;
@@ -22,4 +24,7 @@ export class UserEntity extends BaseEntity {
   @Column()
   @IsNotEmpty({ message: 'The password is required' })
   password!: string;
+
+  @Column('int', { default: 0 })
+  count: number;
 }
