@@ -7,6 +7,8 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { BadRequestException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import SECRET from './constants/secret';
+import { GraphQLJwtRoleRequired } from './roles.decorator';
+import { CurrentUser } from './current-user.decorator';
 
 /*
 Login → server
@@ -57,6 +59,12 @@ export class AuthResolver {
     );
     //token versturen
     return token;
+  }
+
+  @Query(() => String)
+  @GraphQLJwtRoleRequired()
+  testQuery(@CurrentUser() user: any) {
+    return `User test: ${user}`;
   }
 
   @Mutation(() => String)

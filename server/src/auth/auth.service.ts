@@ -72,13 +72,38 @@ export class AuthService {
     return { accessToken, refreshToken, id, count };
   }
 
+  async getUserById(id: number): Promise<UserEntity | Boolean> {
+    if (!id) {
+      return false;
+    }
+
+    const user = await this.UserRepository.findOne({
+      where: { id: id },
+    });
+
+    return user;
+  }
+
+  checkIfCountAligns = async (user_id: number, count: number) => {
+    if (!user_id) {
+      return false;
+    }
+    const user = await this.UserRepository.findOne({
+      where: { id: user_id },
+    });
+
+    if (!user || user.count !== count) {
+      //refresh isn't the same and count isn't either. User needs new creds
+      return false;
+    }
+    return true;
+  };
+
   getTokenFromRequestAuthHeader(request: any): string {
     const authHeader = request?.headers?.authorization as string;
     if (!authHeader) {
       throw new BadRequestException('Authorization header not found.');
     }
-
-    console.log(authHeader);
 
     //     Bearer  ey.xxxxxxx
     const [scheme, credentials] = authHeader.split(' ');
