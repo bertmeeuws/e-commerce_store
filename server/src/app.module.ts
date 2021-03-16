@@ -6,6 +6,8 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { ProductsModule } from './products/products.module';
+
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { AuthModule } from './auth/auth.module';
 
     PokemonModule,
     AuthModule,
+    ProductsModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService],

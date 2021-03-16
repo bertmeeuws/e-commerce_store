@@ -41,7 +41,7 @@ export class GqlJwtGuard implements CanActivate {
       const [parent, args, gqlReqCtx, info] = ctx.getArgs();
       const gqlCtx = GqlExecutionContext.create(ctx);
       const req = gqlCtx.getContext().request;
-
+      
       const token = this.authService.getTokenFromRequestAuthHeader(req);
 
       const decoded = jwt.verify(token, 'fzefjfosfoizefhjeigjeziogj');
@@ -54,6 +54,10 @@ export class GqlJwtGuard implements CanActivate {
       } = decoded as JwtFromRequest;
 
       //Now decode our accesstoken & refreshtokens
+
+      if (!user_id) {
+        throw new HttpException('No user id found', HttpStatus.FORBIDDEN);
+      }
 
       if (!accesstoken) {
         throw new HttpException(
@@ -98,31 +102,7 @@ export class GqlJwtGuard implements CanActivate {
         );
       }
 
-      if (!user_id) {
-        throw new HttpException('No user id found', HttpStatus.FORBIDDEN);
-      }
-
-      const user = this.authService.getUserById(user_id) as any;
-
-      if (!user || user.count !== count) {
-        //refresh isn't the same and count isn't either. User needs new creds
-      }
-
-      /*
-
-      const decodedRefresh = jwt.verify(
-        refreshtoken,
-        'fzefjfosfoizefhjeigjeziogj',
-      );*/
-
-      //console.log(decodedAccess);
-      //console.log(decodedRefresh);
-
-      //const user = this.authService.verifyJwt(token);
-
-      //console.log(user);
-
-      // Set "user" property in GraphQL request context object
+    
 
       return true;
     } catch (err) {
