@@ -9,3 +9,7 @@ export type RegisterInterface = {
   name: string;
   surname: string;
 };
+
+export type ReqRegisterInterface = {
+  registerUser: string;
+};

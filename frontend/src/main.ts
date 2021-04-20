@@ -7,6 +7,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import ApolloClient from "apollo-client";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import VueApollo from "vue-apollo";
+import { Plugin } from "vue-fragment";
 
 const getHeaders = () => {
   const headers: any = {};
@@ -68,4 +69,5 @@ createApp({
 })
   .use(store)
   .use(router)
+  .use(Plugin)
   .mount("#app");

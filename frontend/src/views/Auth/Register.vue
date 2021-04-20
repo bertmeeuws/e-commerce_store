@@ -1,27 +1,38 @@
 <template>
-  <form novalidate="true" @submit.prevent="register()">
-    <label for="email">Email</label>
-    <input id="email" v-model="input.email" type="text" name="email" />
-    <label for="password">Password</label>
-    <input
-      id="password"
-      v-model="input.password"
-      type="password"
-      name="password"
-    />
-    <label for="surname">Surname</label>
-    <input id="surname" v-model="input.surname" type="text" name="surname" />
-    <label for="password">Name</label>
-    <input id="name" v-model="input.name" type="text" name="name" />
-    <input type="submit" value="Login" />
-  </form>
-  <router-link to="/login">Go to login page</router-link>
+  <div>
+    <p>{{ error }}</p>
+    <form
+      v-if="token.token === false"
+      novalidate="true"
+      @submit.prevent="registerUser()"
+    >
+      <label for="email">Email</label>
+      <input id="email" v-model="input.email" type="text" name="email" />
+      <label for="password">Password</label>
+      <input
+        id="password"
+        v-model="input.password"
+        type="password"
+        name="password"
+      />
+      <label for="surname">Surname</label>
+      <input id="surname" v-model="input.surname" type="text" name="surname" />
+      <label for="password">Name</label>
+      <input id="name" v-model="input.name" type="text" name="name" />
+      <input type="submit" value="Login" />
+    </form>
+    <div v-if="token.token">
+      <p>You are logged in</p>
+      <button @click="logout()">Click here to logout</button>
+    </div>
+    <router-link to="/login">Go to login page</router-link>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, onMounted, reactive } from "vue";
 import { RegisterInterface } from "../../interfaces/Auth/Auth";
-import { useMutation, useQuery, useResult } from "@vue/apollo-composable";
+import { useMutation } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 
 export default defineComponent({
@@ -35,7 +46,16 @@ export default defineComponent({
       name: "",
     });
 
-    const { mutate: registerUser, onDone } = useMutation(
+    const token = reactive<any>({
+      token: false,
+    });
+
+    onMounted(() => {
+      const data = localStorage.getItem("token");
+      data ? (token.token = true) : "";
+    });
+
+    const { mutate: registerUser, onDone, error } = useMutation(
       gql`
         mutation($userRegister: createUserInput!) {
           registerUser(userRegister: $userRegister)
@@ -53,16 +73,27 @@ export default defineComponent({
       })
     );
 
-    const register = async () => {
-      await registerUser();
-      onDone((result) => {
-        console.log(result.data);
-      });
+    const logout = () => {
+      localStorage.removeItem("token");
+      token.token = false;
     };
 
+    onDone((result: any) => {
+      console.log(result?.data?.registerUser);
+      if (result?.data.registerUser) {
+        const value = localStorage.setItem("token", result.data.registerUser);
+        token.token = true;
+      } else {
+        console.log("Error in request");
+      }
+    });
+
     return {
-      register,
       input,
+      registerUser,
+      token,
+      logout,
+      error,
     };
   },
 });
