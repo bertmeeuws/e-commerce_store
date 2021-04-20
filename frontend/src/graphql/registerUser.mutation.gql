@@ -1,0 +1,10 @@
+mutation {
+  registerUser(
+    userRegister: {
+      email: "bertjee@gmailddsqdsqd.com"
+      password: "test12345"
+      surname: "Bert"
+      name: "Meeuws"
+    }
+  )
+}

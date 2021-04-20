@@ -1,11 +1,12 @@
 <template>
-  <NavBar />
-
-  <router-view />
+  <div>
+    <NavBar />
+    <router-view />
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
+import NavBar from "./components/NavBar.vue"; // @ is an alias to /src
 
 export default defineComponent({
   name: "App",

@@ -1,6 +1,5 @@
-import { Pokemon } from './pokemon.model';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PokemonEntity } from './pokemon.entity';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { PokemonService } from './pokemon.service';

@@ -8,16 +8,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 
-
 @Module({
   imports: [
     GraphQLModule.forRoot({
       autoSchemaFile: true,
-      cors: {
-        credentials: true,
-        origin: true,
-      },
       //Make sure req gets passed properly after Auth
+
       context: ({ req, res }: any) => {
         // Sets the "request" object for each GQL request to read headers for auth, etc
         return { request: req };
@@ -39,7 +35,6 @@ import { ProductsModule } from './products/products.module';
     PokemonModule,
     AuthModule,
     ProductsModule,
-    
   ],
   controllers: [AppController],
   providers: [AppService],

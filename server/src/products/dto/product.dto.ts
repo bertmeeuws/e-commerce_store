@@ -1,22 +1,24 @@
-import { CategoryDto } from './category.dto';
-import { ImageDto } from './image.dto';
-import { Field, InputType, ObjectType } from "@nestjs/graphql";
+import { Field, InputType, ObjectType, OmitType } from '@nestjs/graphql';
 
+@ObjectType()
+export class Product {
+  @Field() readonly id: string;
+  @Field() readonly title: string;
+  @Field() readonly description: string;
+  @Field() readonly categories?: number;
 
-@ObjectType("product")
-@InputType("ProductDto")
-export class ProductDto{
-    @Field() readonly id?: number;
-    @Field() readonly title?: string;
-    @Field() readonly description?: string;
-    @Field() readonly categories?: any;
+  //@Field() readonly photos?: ImageDto;
+  @Field() readonly price?: number;
 
-    @Field() readonly photos?: any;
-    @Field() readonly price?: number;
-
-    @Field() readonly S?: number;
-    @Field() readonly M?: number;
-    @Field() readonly L?: number;
-    @Field() readonly XL?: number;
-
+  @Field({ defaultValue: 100 }) readonly S?: number;
+  @Field({ defaultValue: 100 }) readonly M?: number;
+  @Field({ defaultValue: 100 }) readonly L?: number;
+  @Field({ defaultValue: 100 }) readonly XL?: number;
 }
+
+@InputType()
+export class CreateProduct extends OmitType(
+  Product,
+  ['id', 'S', 'M', 'L', 'XL'],
+  InputType,
+) {}

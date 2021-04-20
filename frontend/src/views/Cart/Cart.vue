@@ -1,12 +1,14 @@
 <template>
-  <p>cart</p>
-  <p v-if="cart.length === 0">Geen items</p>
-  <div class="cart--content" v-else>
-    <div class="cart--item" v-for="(item, index) in cart" :key="index">
-      <button @click="deleteItem(item.id)">X</button>
-      <img class="cart--item--img" :src="item.image" alt="" />
-      <p>{{ item.title }}</p>
-      <p>{{ item.count }}</p>
+  <div>
+    <p>cart</p>
+    <p v-if="cart.length === 0">Geen items</p>
+    <div class="cart--content" v-else>
+      <div class="cart--item" v-for="(item, index) in cart" :key="index">
+        <button @click="deleteItem(item.id)">X</button>
+        <img class="cart--item--img" :src="item.image" alt="" />
+        <p>{{ item.title }}</p>
+        <input class="input" type="number" v-model="item.count" />
+      </div>
     </div>
   </div>
 </template>
@@ -51,6 +53,7 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 .cart--item button {
   margin: 0 auto;
@@ -60,5 +63,8 @@ export default defineComponent({
   font-weight: 600;
   color: red;
   cursor: pointer;
+}
+.input {
+  margin-left: 30px;
 }
 </style>
