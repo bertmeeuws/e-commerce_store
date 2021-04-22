@@ -11,7 +11,7 @@ import { Plugin } from "vue-fragment";
 
 const getHeaders = () => {
   const headers: any = {};
-  const token = window.localStorage.getItem("apollo-token");
+  const token = window.localStorage.getItem("token");
   if (token) {
     headers.authorization = `Bearer ${token}`;
   }
@@ -48,6 +48,8 @@ const defaultClient = new ApolloClient({
 const httpLink = createHttpLink({
   // You should use an absolute URL here
   uri: "http://localhost:3000/graphql",
+  headers: getHeaders(),
+  credentials: "include",
 });
 
 // Cache implementation

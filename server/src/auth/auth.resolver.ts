@@ -1,14 +1,24 @@
+import { CreateUser } from './interface/jwt.interface';
 import { loginUserInput } from './dto/login-user.input';
 import { createUserInput } from './dto/create-user.input';
 import { UserModel } from './model/user.model';
 import { AuthService } from './auth.service';
 import { UserEntity } from './entity/user.entity';
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Context,
+  GraphQLExecutionContext,
+  GqlExecutionContext,
+} from '@nestjs/graphql';
 import { BadRequestException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import SECRET from './constants/secret';
 import { GraphQLJwtRoleRequired } from './roles.decorator';
 import { CurrentUser } from './current-user.decorator';
+import { createTokens } from './utils';
 
 /*
 Login → server
@@ -34,17 +44,24 @@ export class AuthResolver {
     return await this.authService.showAll();
   }
 
-  @Mutation(() => String)
+  /*
+  @Mutation(() => Boolean)
+  async forgotPassword(
+    @Args('forgotPassword') user: CreateUser,
+  ): Promise<Boolean> {
+    return true;
+  }
+
+  */
+
+  @Mutation(() => Boolean)
   async registerUser(
+    @Context() context: any,
     @Args('userRegister') data: createUserInput,
-  ): Promise<String> {
-    console.log('Inside resolver');
-    const {
-      accessToken,
-      refreshToken,
-      id,
-      count,
-    } = await this.authService.registerUser(data);
+  ): Promise<Boolean> {
+    const { id, count } = await this.authService.registerUser(data);
+
+    const { accessToken, refreshToken } = createTokens(id);
 
     console.log(accessToken + ' ' + refreshToken + ' ' + id);
 
@@ -55,10 +72,20 @@ export class AuthResolver {
         user_id: id,
         count,
       },
-      'fzefjfosfoizefhjeigjeziogj',
+      SECRET.mainToken,
     );
-    //token versturen
-    return token;
+
+    context.response.cookie('new', 'hiya', { httpOnly: true });
+
+    //const gqlCtx = GqlExecutionContext.create(context);
+
+    // console.log(gqlCtx.getContext().request);
+
+    console.log(context.request);
+
+    console.log('Token created and sent back');
+
+    return true;
   }
 
   @Query(() => String)

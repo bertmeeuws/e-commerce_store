@@ -41,7 +41,13 @@ export class GqlJwtGuard implements CanActivate {
       const [parent, args, gqlReqCtx, info] = ctx.getArgs();
       const gqlCtx = GqlExecutionContext.create(ctx);
       const req = gqlCtx.getContext().request;
-      
+
+      const res = gqlCtx.getContext().response;
+
+      //res.cookie('cookie-name', 'cookie-value', { httpOnly: true });
+
+      //res.setCookie('key', 'value');
+
       const token = this.authService.getTokenFromRequestAuthHeader(req);
 
       const decoded = jwt.verify(token, 'fzefjfosfoizefhjeigjeziogj');
@@ -101,8 +107,6 @@ export class GqlJwtGuard implements CanActivate {
           HttpStatus.FORBIDDEN,
         );
       }
-
-    
 
       return true;
     } catch (err) {

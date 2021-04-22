@@ -1,3 +1,5 @@
+import { CreateUser } from './interface/jwt.interface';
+import { RolesEntity } from './../entities/roles.entity';
 import { createTokens } from './utils/index';
 import { createUserInput } from './dto/create-user.input';
 import { Repository } from 'typeorm';
@@ -11,6 +13,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { loginUserInput } from './dto/login-user.input';
 import * as jwt from 'jsonwebtoken';
+import { title } from 'node:process';
 
 @Injectable()
 export class AuthService {
@@ -23,9 +26,7 @@ export class AuthService {
     return await this.UserRepository.find();
   }
 
-  async registerUser(data: createUserInput): Promise<any> {
-    //Return jwt
-
+  async registerUser(data: createUserInput): Promise<CreateUser> {
     //check if email already exists
     const uniqueEmail = await this.UserRepository.findOne({
       where: { email: data.email },
@@ -46,8 +47,43 @@ export class AuthService {
 
     const { id, count } = user;
 
-    const { accessToken, refreshToken } = createTokens(user);
-    return { accessToken, refreshToken, id, count };
+    return { id, count };
+  }
+
+  async addRolesToUser(user_id: number, roles: [string]): Promise<string[]> {
+    if (!user_id) {
+      throw new BadRequestException('No user_id given');
+    }
+    if (!roles) {
+      throw new BadRequestException('No roles to assign');
+    }
+
+    const user = await this.UserRepository.findOne({
+      where: { id: user_id },
+    });
+
+    if (!user) {
+      throw new BadRequestException('No user found during adding roles');
+    }
+
+    roles.forEach(async (role) => {
+      const new_role = new RolesEntity();
+      new_role.title = role;
+      user.roles = [...user.roles, new_role];
+      await this.UserRepository.save(user);
+    });
+
+    console.log('Roles injected');
+
+    const { roles: updatedRoles } = await this.UserRepository.findOne({
+      where: { id: user_id },
+    });
+
+    let currentRoles = updatedRoles.map(({ title }) => title);
+
+    console.log('Curent roles: ' + currentRoles);
+
+    return currentRoles;
   }
 
   async login(data: loginUserInput) {
@@ -67,7 +103,7 @@ export class AuthService {
       throw new BadRequestException('Information incorrect');
     }
     //correct? create tokens and send back in cookie
-    const { accessToken, refreshToken } = createTokens(user);
+    const { accessToken, refreshToken } = createTokens(user.id);
 
     return { accessToken, refreshToken, id, count };
   }

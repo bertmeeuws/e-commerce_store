@@ -13,10 +13,14 @@ import { ProductsModule } from './products/products.module';
     GraphQLModule.forRoot({
       autoSchemaFile: true,
       //Make sure req gets passed properly after Auth
-
+      cors: {
+        credentials: true,
+        origin: ['http://localhost:8080'],
+      },
       context: ({ req, res }: any) => {
         // Sets the "request" object for each GQL request to read headers for auth, etc
-        return { request: req };
+
+        return { request: req, response: res };
       },
     }),
     TypeOrmModule.forRoot({

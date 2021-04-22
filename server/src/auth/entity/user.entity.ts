@@ -1,6 +1,14 @@
+import { RolesEntity } from './../../entities/roles.entity';
 import { ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('user')
 @ObjectType('user')
@@ -27,4 +35,10 @@ export class UserEntity extends BaseEntity {
 
   @Column('int', { default: 0 })
   count: number;
+
+  @ManyToMany(() => RolesEntity, (roles) => roles.users, {
+    cascade: true,
+  })
+  @JoinTable()
+  roles: RolesEntity[];
 }

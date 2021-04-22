@@ -24,6 +24,6 @@ export class GqlRolesGuard implements CanActivate {
     if (!roles) return true;
     const [parent, args, ctx, info] = context.getArgs();
     return true;
-    //return this.authService.checkUserRoles(ctx.request.user, ...roles);
+    return this.authService.checkUserRoles(ctx.request.user, ...roles);
   }
 }
