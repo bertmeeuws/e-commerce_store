@@ -9,6 +9,8 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import * as jwt from 'jsonwebtoken';
 import { JwtFromRequest } from './interface/jwt.interface';
+import SECRET from './constants/secret';
+import { UnauthorizedError } from 'type-graphql';
 
 @Injectable()
 export class HttpJwtGuard implements CanActivate {
@@ -33,7 +35,7 @@ export class HttpJwtGuard implements CanActivate {
 export class GqlJwtGuard implements CanActivate {
   constructor(private readonly authService: AuthService) {}
 
-  canActivate(ctx: ExecutionContext): boolean {
+  async canActivate(ctx: ExecutionContext): Promise<boolean> {
     try {
       // This is GraphQL resolver signature
       // (parent, args, context, info) => {}
@@ -44,68 +46,81 @@ export class GqlJwtGuard implements CanActivate {
 
       const res = gqlCtx.getContext().response;
 
-      //res.cookie('cookie-name', 'cookie-value', { httpOnly: true });
+      const cookie = req?.cookies?.token;
 
-      //res.setCookie('key', 'value');
+      if (!cookie) {
+        throw new UnauthorizedError();
+      }
 
-      const token = this.authService.getTokenFromRequestAuthHeader(req);
+      const decoded = jwt.verify(cookie, SECRET.mainToken);
 
-      const decoded = jwt.verify(token, 'fzefjfosfoizefhjeigjeziogj');
+      if (!decoded) {
+        throw new UnauthorizedError();
+      }
 
       const {
-        accesstoken,
-        refreshtoken,
+        accessToken,
+        refreshToken,
         user_id,
         count,
       } = decoded as JwtFromRequest;
 
       //Now decode our accesstoken & refreshtokens
 
-      if (!user_id) {
-        throw new HttpException('No user id found', HttpStatus.FORBIDDEN);
+      if (!user_id || !accessToken) {
+        throw new UnauthorizedError();
       }
 
-      if (!accesstoken) {
-        throw new HttpException(
-          'No accesstoken found, please login again',
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      // ACCESS TOKEN //
+      //ACCESS TOKEN//
+
       try {
-        //checking if it's expired
         const decodedAccess = jwt.verify(
-          accesstoken,
-          'fzefjfosfoizefhjeigjeziogj',
+          accessToken,
+          SECRET.accessToken,
         ) as any;
+
+        //Setting user identity, to later use in the @Decorator
         req.user = decodedAccess.userId;
         return true;
-      } catch {
-        console.log('Accesstoken expired');
-      }
+      } catch (e) {
+        console.log('Accesstoken expired, checking for refreshtoken');
+        //Check refresh token here
 
-      if (!refreshtoken) {
-        throw new HttpException(
-          'No refreshtoken found please login again',
-          HttpStatus.FORBIDDEN,
-        );
-      }
-      //REFRESH TOKEN//
-      try {
-        const decodedRefresh = jwt.verify(
-          refreshtoken,
-          'fzefjfosfoizefhjeigjeziogj',
-        ) as any;
-        if (decodedRefresh) req.user = decodedRefresh.userId;
-        //Refresh is active
-        //Checking count, if the same grant new access and refresh token if not give error, because someone might have resetted their pass
-        this.authService.checkIfCountAligns(user_id, count) as any;
-      } catch (err) {
-        console.log('Refresh expired');
-        throw new HttpException(
-          'Refreshtoken is expired please login again',
-          HttpStatus.FORBIDDEN,
-        );
+        if (!refreshToken) {
+          throw new UnauthorizedError();
+        }
+
+        try {
+          const decodedRefresh = jwt.verify(
+            refreshToken,
+            SECRET.refreshToken,
+          ) as any;
+
+          if (decodedRefresh) {
+            req.user = decodedRefresh.userId;
+          } else {
+            return false;
+          }
+          //Refresh is active
+          //Checking count, if the same grant new access and refresh token if not give error, because someone might have resetted their pass
+
+          console.log('Now checking if count aligns');
+
+          const response = await this.authService.checkIfCountAligns(
+            user_id,
+            count,
+          );
+
+          if (!response) {
+            console.log('Count does not align');
+            throw new UnauthorizedError();
+          }
+
+          console.log('Refresh token works and count aligns');
+        } catch (err) {
+          console.log('Count does not align or refreshtoken');
+          throw new UnauthorizedError();
+        }
       }
 
       return true;

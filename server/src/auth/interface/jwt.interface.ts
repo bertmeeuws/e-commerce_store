@@ -1,6 +1,6 @@
 export interface JwtFromRequest {
-  accesstoken: string;
-  refreshtoken: string;
+  accessToken: string;
+  refreshToken: string;
   user_id: number;
   count: number;
 }

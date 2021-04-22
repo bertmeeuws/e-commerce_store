@@ -13,7 +13,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { loginUserInput } from './dto/login-user.input';
 import * as jwt from 'jsonwebtoken';
-import { title } from 'node:process';
 
 @Injectable()
 export class AuthService {
@@ -44,6 +43,10 @@ export class AuthService {
       name: data.name,
       password: hashedPassword,
     }).save();
+
+    if (!user) {
+      throw new BadRequestException();
+    }
 
     const { id, count } = user;
 
@@ -129,9 +132,10 @@ export class AuthService {
     });
 
     if (!user || user.count !== count) {
-      //refresh isn't the same and count isn't either. User needs new creds
+      //refresh isn't the same and count isn't either. User needs new to login again. Did a password reset before
       return false;
     }
+    console.log(user.count + '      ' + count);
     return true;
   };
 

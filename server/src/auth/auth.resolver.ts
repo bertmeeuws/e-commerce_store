@@ -1,4 +1,4 @@
-import { CreateUser } from './interface/jwt.interface';
+import { CreateUser, JwtFromRequest } from './interface/jwt.interface';
 import { loginUserInput } from './dto/login-user.input';
 import { createUserInput } from './dto/create-user.input';
 import { UserModel } from './model/user.model';
@@ -60,30 +60,21 @@ export class AuthResolver {
     @Args('userRegister') data: createUserInput,
   ): Promise<Boolean> {
     const { id, count } = await this.authService.registerUser(data);
-
     const { accessToken, refreshToken } = createTokens(id);
-
-    console.log(accessToken + ' ' + refreshToken + ' ' + id);
 
     const token = jwt.sign(
       {
-        accesstoken: accessToken,
-        refreshtoken: refreshToken,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
         user_id: id,
         count,
-      },
+      } as JwtFromRequest,
       SECRET.mainToken,
     );
 
-    context.response.cookie('new', 'hiya', { httpOnly: true });
+    context.response.cookie('token', token, { httpOnly: true });
 
-    //const gqlCtx = GqlExecutionContext.create(context);
-
-    // console.log(gqlCtx.getContext().request);
-
-    console.log(context.request);
-
-    console.log('Token created and sent back');
+    console.log('Token created and sent back as cookie');
 
     return true;
   }
@@ -94,8 +85,8 @@ export class AuthResolver {
     return `User test: ${user}`;
   }
 
-  @Mutation(() => String)
-  async login(@Args('login') data: loginUserInput) {
+  @Mutation(() => Boolean)
+  async login(@Context() context: any, @Args('login') data: loginUserInput) {
     const {
       accessToken,
       refreshToken,
@@ -109,14 +100,18 @@ export class AuthResolver {
 
     const token = jwt.sign(
       {
-        accesstoken: accessToken,
-        refreshtoken: refreshToken,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
         user_id: id,
         count,
-      },
-      'fzefjfosfoizefhjeigjeziogj',
+      } as JwtFromRequest,
+      SECRET.mainToken,
     );
 
-    return token;
+    context.response.cookie('token', token, { httpOnly: true });
+
+    console.log('User logged in and cookie sent back');
+
+    return true;
   }
 }
