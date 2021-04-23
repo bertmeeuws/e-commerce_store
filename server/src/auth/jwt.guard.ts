@@ -11,6 +11,7 @@ import * as jwt from 'jsonwebtoken';
 import { JwtFromRequest } from './interface/jwt.interface';
 import SECRET from './constants/secret';
 import { UnauthorizedError } from 'type-graphql';
+import { createTokens } from './utils';
 
 @Injectable()
 export class HttpJwtGuard implements CanActivate {
@@ -84,12 +85,9 @@ export class GqlJwtGuard implements CanActivate {
         return true;
       } catch (e) {
         console.log('Accesstoken expired, checking for refreshtoken');
-        //Check refresh token here
-
         if (!refreshToken) {
           throw new UnauthorizedError();
         }
-
         try {
           const decodedRefresh = jwt.verify(
             refreshToken,
@@ -116,7 +114,25 @@ export class GqlJwtGuard implements CanActivate {
             throw new UnauthorizedError();
           }
 
-          console.log('Refresh token works and count aligns');
+          const {
+            accessToken: new_accesToken,
+            refreshToken: new_refreshToken,
+          } = createTokens(user_id);
+
+          const token = jwt.sign(
+            {
+              accessToken: new_accesToken,
+              refreshToken: new_refreshToken,
+              user_id: user_id,
+              count,
+            } as JwtFromRequest,
+            SECRET.mainToken,
+          );
+
+          console.log(
+            'Refresh token works and count aligns, creating new cookie with new tokens',
+          );
+          res.cookie('token', token, { httpOnly: true });
         } catch (err) {
           console.log('Count does not align or refreshtoken');
           throw new UnauthorizedError();

@@ -1,4 +1,4 @@
-import { CreateUser } from './interface/jwt.interface';
+import { CreateUser, JwtFromRequest } from './interface/jwt.interface';
 import { RolesEntity } from './../entities/roles.entity';
 import { createTokens } from './utils/index';
 import { createUserInput } from './dto/create-user.input';
@@ -13,6 +13,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { loginUserInput } from './dto/login-user.input';
 import * as jwt from 'jsonwebtoken';
+import { Context } from 'node:vm';
+import SECRET from './constants/secret';
 
 @Injectable()
 export class AuthService {
@@ -135,7 +137,7 @@ export class AuthService {
       //refresh isn't the same and count isn't either. User needs new to login again. Did a password reset before
       return false;
     }
-    console.log(user.count + '      ' + count);
+
     return true;
   };
 
@@ -171,9 +173,20 @@ export class AuthService {
     };
   }
 
-  checkUserRoles(user: any, ...roles: string[]) {
-    const claims = user['https://hasura.io/jwt/claims'];
-    const allowedRoles = claims['x-hasura-allowed-roles'];
-    return allowedRoles.some((role) => roles.includes(role));
+  async checkUserRoles(ctx: Context, token: string, ...roles: string[]) {
+    const decodedCookie = jwt.verify(token, SECRET.mainToken) as JwtFromRequest;
+
+    if (!decodedCookie) {
+      throw new UnauthorizedException();
+    }
+
+    const id = decodedCookie.user_id;
+    const user = await this.getUserById(id);
+
+    //Make sure roles gets pulled as well
+
+    console.log(user);
+
+    return roles.some((role) => roles.includes(role));
   }
 }
