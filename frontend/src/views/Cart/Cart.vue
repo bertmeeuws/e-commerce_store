@@ -7,7 +7,7 @@
         <button @click="deleteItem(item.id)">X</button>
         <img class="cart--item--img" :src="item.image" alt="" />
         <p>{{ item.title }}</p>
-        <input class="input" type="number" v-model="item.count" />
+        <input class="input" type="number" min="0" v-model="item.count" />
       </div>
     </div>
   </div>

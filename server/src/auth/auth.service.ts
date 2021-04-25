@@ -21,10 +21,15 @@ export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly UserRepository: Repository<UserEntity>,
+
+    @InjectRepository(RolesEntity)
+    private readonly RolesRepository: Repository<RolesEntity>,
   ) {}
 
   async showAll(): Promise<UserEntity[]> {
-    return await this.UserRepository.find();
+    return await this.UserRepository.find({
+      relations: ['roles', 'roles.users'],
+    });
   }
 
   async registerUser(data: createUserInput): Promise<CreateUser> {
@@ -51,11 +56,15 @@ export class AuthService {
     }
 
     const { id, count } = user;
-
     return { id, count };
   }
 
-  async addRolesToUser(user_id: number, roles: [string]): Promise<string[]> {
+  async addRolesToUser(user_id: number, roles: string[]): Promise<string[]> {
+    if (!roles) {
+      console.log('No roles found, skipping');
+      return [];
+    }
+
     if (!user_id) {
       throw new BadRequestException('No user_id given');
     }
@@ -72,23 +81,39 @@ export class AuthService {
     }
 
     roles.forEach(async (role) => {
-      const new_role = new RolesEntity();
-      new_role.title = role;
-      user.roles = [...user.roles, new_role];
-      await this.UserRepository.save(user);
+      try {
+        const role1 = new RolesEntity();
+        role1.title = role;
+
+        console.log(role1);
+
+        await this.RolesRepository.save(role1);
+
+        const user = await this.UserRepository.findOne({
+          where: { id: user_id },
+        });
+
+        user.roles = [role1];
+
+        await this.UserRepository.save(user);
+      } catch (e) {
+        console.log(e);
+      }
     });
 
     console.log('Roles injected');
 
-    const { roles: updatedRoles } = await this.UserRepository.findOne({
+    const updatedUser = await this.UserRepository.findOne({
       where: { id: user_id },
     });
 
-    let currentRoles = updatedRoles.map(({ title }) => title);
+    console.log(updatedUser.roles);
 
-    console.log('Curent roles: ' + currentRoles);
+    //let currentRoles = updatedRoles.map(({ title }) => title);
 
-    return currentRoles;
+    //console.log('Curent roles: ' + currentRoles);
+
+    return [];
   }
 
   async login(data: loginUserInput) {

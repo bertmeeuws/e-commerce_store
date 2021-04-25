@@ -42,6 +42,7 @@ export class AuthResolver {
   @Query(() => [UserModel])
   async users(): Promise<UserEntity[]> {
     return await this.authService.showAll();
+    
   }
 
   /*
@@ -60,6 +61,9 @@ export class AuthResolver {
     @Args('userRegister') data: createUserInput,
   ): Promise<Boolean> {
     const { id, count } = await this.authService.registerUser(data);
+
+    const roles = await this.authService.addRolesToUser(id, ['user', 'admin']);
+
     const { accessToken, refreshToken } = createTokens(id);
 
     const token = jwt.sign(

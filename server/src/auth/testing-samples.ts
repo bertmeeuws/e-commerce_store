@@ -1,4 +1,5 @@
 /*
+
 mutation {
     registerUser(
       userRegister: {
@@ -14,6 +15,8 @@ mutation {
   mutation {
     login(login: { email: "bert@gmail.com", password: "test1234" })
   }
+
+
   
 
   {
