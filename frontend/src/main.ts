@@ -8,6 +8,8 @@ import ApolloClient from "apollo-client";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import VueApollo from "vue-apollo";
 import { Plugin } from "vue-fragment";
+import "./css/reset.css";
+import "./css/style.css";
 
 const getHeaders = () => {
   const headers: any = {};

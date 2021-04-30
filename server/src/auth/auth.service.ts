@@ -1,5 +1,6 @@
+import { RolesEntity } from 'src/entities/roles.entity';
 import { CreateUser, JwtFromRequest } from './interface/jwt.interface';
-import { RolesEntity } from './../entities/roles.entity';
+
 import { createTokens } from './utils/index';
 import { createUserInput } from './dto/create-user.input';
 import { Repository } from 'typeorm';
@@ -27,9 +28,15 @@ export class AuthService {
   ) {}
 
   async showAll(): Promise<UserEntity[]> {
+    /*
     return await this.UserRepository.find({
       relations: ['roles', 'roles.users'],
     });
+    */
+
+    return await this.UserRepository.createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'roles')
+      .getMany();
   }
 
   async registerUser(data: createUserInput): Promise<CreateUser> {
