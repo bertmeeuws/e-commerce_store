@@ -21,6 +21,9 @@
           <router-link to="/login">Login</router-link>
         </div>
         <ul class="nav-items">
+          <li @click="navigate('/home')" class="nav-item p-semibold-nav">
+            <img src="@/assets/img/logo.svg" alt="" />
+          </li>
           <li class="nav-item p-semibold-nav">Laptops</li>
           <li class="nav-item p-semibold-nav">Desktop pc's</li>
           <li class="nav-item p-semibold-nav">Networking devices</li>
@@ -73,6 +76,7 @@ export default defineComponent({
 }
 .nav-items li {
   margin-right: 2.5rem;
+  cursor: pointer;
 }
 .nav {
   display: flex;

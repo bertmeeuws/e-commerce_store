@@ -4,7 +4,15 @@
     <div class="explorer-grid">
       <Filter />
       <ActiveFilters v-bind:activeFilters="Active_filters" />
-      <div class="exlorer-container"></div>
+      <div class="exlorer-container">
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+        <ProductItem />
+      </div>
     </div>
   </section>
 </template>
@@ -13,6 +21,7 @@
 import { defineComponent } from "vue";
 import Filter from "../Products/Filter.vue";
 import ActiveFilters from "../Products/ActiveFilters.vue";
+import ProductItem from "../Products/ProductItem.vue";
 
 import { Active_Filter } from "../../interfaces/Filters.interface";
 
@@ -20,6 +29,7 @@ export default defineComponent({
   components: {
     Filter,
     ActiveFilters,
+    ProductItem,
   },
 
   setup() {
@@ -51,5 +61,9 @@ export default defineComponent({
 .exlorer-container {
   grid-area: explorer;
   border: 0.1rem solid violet;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
 }
 </style>

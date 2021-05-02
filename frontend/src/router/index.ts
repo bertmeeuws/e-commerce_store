@@ -1,5 +1,10 @@
 import { ClothingItem } from "./../interfaces/ClothingItem.types";
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  RouteRecordRaw,
+} from "vue-router";
 import Home from "../views/Home.vue";
 import Collection from "../views/Shop/Collection.vue";
 import NotFound from "../views/Misc/NotFound.vue";
@@ -11,7 +16,19 @@ const routes: Array<RouteRecordRaw> = [
     name: "Home",
     component: Home,
   },
-
+  {
+    path: "/products",
+    name: "Products",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Products.vue"),
+  },
+  {
+    path: "/products/:id",
+    name: "Product",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Shop/ProductDetail.vue"),
+    props: true,
+  },
   {
     path: "/about",
     name: "About",
@@ -60,7 +77,8 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
+
   routes,
 });
 

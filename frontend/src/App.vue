@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app">
     <NavBar />
     <router-view />
   </div>
@@ -18,5 +18,8 @@ export default defineComponent({
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.app {
+  padding-bottom: 10rem;
 }
 </style>
