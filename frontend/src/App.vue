@@ -1,5 +1,10 @@
 <template>
   <div class="app">
+    <link
+      rel="icon"
+      :href="require('@/assets/img/logo.png')"
+      type="image/x-icon"
+    />
     <NavBar />
     <router-view />
   </div>

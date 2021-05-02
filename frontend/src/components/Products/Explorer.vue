@@ -1,6 +1,7 @@
 <template>
   <section class="explorer">
-    <h1 class="h1 title">MSI PS Series (20)</h1>
+    <h1 v-if="name" class="h1 title">{{ name }} (20)</h1>
+    <h1 v-if="!name" class="h1 title">Products page (20)</h1>
     <div class="explorer-grid">
       <Filter />
       <ActiveFilters v-bind:activeFilters="Active_filters" />
@@ -30,6 +31,13 @@ export default defineComponent({
     Filter,
     ActiveFilters,
     ProductItem,
+  },
+
+  props: {
+    name: {
+      type: String,
+      required: false,
+    },
   },
 
   setup() {

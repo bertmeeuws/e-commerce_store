@@ -1,14 +1,30 @@
 import { ClothingItem } from "./../interfaces/ClothingItem.types";
-import {
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-  RouteRecordRaw,
-} from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import Collection from "../views/Shop/Collection.vue";
 import NotFound from "../views/Misc/NotFound.vue";
 import ClothingDetail from "../views/Shop/ClothingDetail.vue";
+
+const Pages: Array<string> = [
+  "Laptops",
+  "Desktops",
+  "Networkingdevices",
+  "Printers",
+];
+
+let pageRoutes: Array<undefined> | Array<any> = [];
+
+Pages.forEach((name) => {
+  pageRoutes.push({
+    path: `/${name}`,
+    name: `${name}`,
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Products.vue"),
+    props: {
+      pageName: name,
+    },
+  } as any);
+});
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -16,6 +32,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Home",
     component: Home,
   },
+
   {
     path: "/products",
     name: "Products",
@@ -74,6 +91,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/:pathMatch(.*)*", //Wild card used to check if routes exist
     component: NotFound,
   },
+  ...pageRoutes,
 ];
 
 const router = createRouter({

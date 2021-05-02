@@ -21,13 +21,24 @@
           <router-link to="/login">Login</router-link>
         </div>
         <ul class="nav-items">
-          <li @click="navigate('/home')" class="nav-item p-semibold-nav">
+          <li @click="navigate('/')" class="nav-item p-semibold-nav">
             <img src="@/assets/img/logo.svg" alt="" />
           </li>
-          <li class="nav-item p-semibold-nav">Laptops</li>
-          <li class="nav-item p-semibold-nav">Desktop pc's</li>
-          <li class="nav-item p-semibold-nav">Networking devices</li>
-          <li class="nav-item p-semibold-nav">Printers & scanners</li>
+          <li @click="navigate('/laptops')" class="nav-item p-semibold-nav">
+            Laptops
+          </li>
+          <li @click="navigate('/Desktops')" class="nav-item p-semibold-nav">
+            Desktop pc's
+          </li>
+          <li
+            @click="navigate('/Networkingdevices')"
+            class="nav-item p-semibold-nav"
+          >
+            Networking devices
+          </li>
+          <li @click="navigate('/Printers')" class="nav-item p-semibold-nav">
+            Printers & scanners
+          </li>
           <li class="nav-item p-semibold-nav">PC Parts</li>
           <li class="nav-item p-semibold-nav">All other products</li>
           <li class="nav-item p-semibold-nav">Repairs</li>
@@ -41,6 +52,7 @@
 <script lang="ts">
 import { useStore } from "vuex";
 import { defineComponent, computed } from "vue";
+import { RouteLocationRaw, useRouter } from "vue-router";
 //import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 
 export default defineComponent({
@@ -49,8 +61,15 @@ export default defineComponent({
 
   setup() {
     const store = useStore();
+    const router = useRouter();
+
+    const navigate = (url: RouteLocationRaw) => {
+      router.push(url);
+    };
+
     return {
       length: computed(() => store.state.cart.length),
+      navigate,
     };
   },
 });

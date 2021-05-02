@@ -1,8 +1,8 @@
 <template>
   <div class="home wrapper">
-    <img src="@/assets/img/ad.png" />
+    <img :src="require('@/assets/img/ad.png')" />
     <Breadcrumbs v-bind:categories="categories" />
-    <Explorer />
+    <Explorer v-bind:name="pageName" />
   </div>
 </template>
 
@@ -15,9 +15,17 @@ export default defineComponent({
   name: "Products",
   components: { Breadcrumbs, Explorer },
 
-  setup() {
+  props: {
+    pageName: {
+      type: String,
+      required: false,
+    },
+  },
+
+  setup({ pageName }) {
     const categories: string[] = ["test", "test", "test"];
 
+    console.log(pageName);
     return {
       categories,
     };
