@@ -45,8 +45,9 @@
           <li class="nav-item item-important-blue">Our deals</li>
         </ul>
         <div class="nav-right">
-          <p class="p-semibold-nav">Register</p>
-          <p class="p-semibold-nav">Login</p>
+          <p @click="navigate('/register')" class="p-semibold-nav">Register</p>
+          <p @click="navigate('/login')" class="p-semibold-nav">Login</p>
+          <p @click="navigate('/cart')" class="p-semibold-nav">Cart</p>
         </div>
       </div>
     </nav>
