@@ -21,7 +21,7 @@
           <router-link to="/login">Login</router-link>
         </div>
         <ul class="nav-items">
-          <li @click="navigate('/')" class="nav-item p-semibold-nav">
+          <li @click="navigate('/')" class="">
             <img src="@/assets/img/logo.svg" alt="" />
           </li>
           <li @click="navigate('/laptops')" class="nav-item p-semibold-nav">
@@ -44,6 +44,10 @@
           <li class="nav-item p-semibold-nav">Repairs</li>
           <li class="nav-item item-important-blue">Our deals</li>
         </ul>
+        <div class="nav-right">
+          <p class="p-semibold-nav">Register</p>
+          <p class="p-semibold-nav">Login</p>
+        </div>
       </div>
     </nav>
   </div>
@@ -76,6 +80,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.nav-right p {
+  margin-left: 2rem;
+  cursor: pointer;
+}
 .nav-topbar {
   background-color: var(--black);
   color: white;
@@ -95,7 +103,19 @@ export default defineComponent({
 }
 .nav-items li {
   margin-right: 2.5rem;
+}
+.nav-item {
   cursor: pointer;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.3rem solid transparent;
+  margin-top: 0.5rem;
+}
+.nav-item:hover {
+  border-bottom: 0.3rem solid var(--blue);
+}
+.nav-item:last-child {
+  border: 0.2rem solid var(--blue);
+  padding: 1rem 2rem;
 }
 .nav {
   display: flex;

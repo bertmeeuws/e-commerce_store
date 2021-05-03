@@ -1,6 +1,8 @@
 <template>
   <div @click="navigate()" class="product__item">
-    <p class="product__stock">In stock</p>
+    <p class="product__stock">
+      <img :src="require('@/assets/img/stock.png')" alt="" /> In stock
+    </p>
     <img src="@/assets/img/laptop.png" alt="" />
     <div class="product__reviews p-small">
       <img src="@/assets/img/yellowstar.png" alt="" />

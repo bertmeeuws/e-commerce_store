@@ -54,3 +54,6 @@ body {
   border-radius: 5rem;
   text-align: center;
 }
+.p-blue {
+  color: var(--blue);
+}

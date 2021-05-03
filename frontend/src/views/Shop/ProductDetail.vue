@@ -1,6 +1,6 @@
 <template>
-  <section class="wrapper">
-    <div class="product-navigation">
+  <section class="">
+    <div class="product-navigation wrapper">
       <div class="nav-left">
         <p
           @click="changePage('About product')"
@@ -39,14 +39,20 @@
         </p>
       </form>
     </div>
+    <div class="product-header">
+      <div class="product-header-left">
+        <AboutProduct />
+      </div>
+    </div>
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
+import AboutProduct from "../../components/Products/AboutProduct.vue";
 
 export default defineComponent({
-  components: {},
+  components: { AboutProduct },
   name: "ProductDetail",
 
   setup() {
@@ -102,6 +108,9 @@ export default defineComponent({
 .nav-right .input {
   width: 3rem;
   text-align: center;
+  font-weight: 600;
+  padding: 1rem;
+  margin-left: 1.5rem;
 }
 .nav-right p {
   margin-left: 2rem;
