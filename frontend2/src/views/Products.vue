@@ -1,6 +1,6 @@
 <template>
   <div class="home wrapper">
-    <img :src="require('@/assets/img/ad.png')" />
+    <img src="/img/ad.png" />
     <Breadcrumbs v-bind:categories="categories" />
     <Explorer v-bind:name="pageName" />
   </div>

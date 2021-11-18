@@ -1,42 +1,38 @@
 <template>
-  <div @click="navigate()" class="product__item">
-    <p class="flex">
-      <img class="flex-shrink-0" src="/img/stock.png" alt="" /> In stock
-    </p>
-    <img src="@/assets/img/laptop.png" alt="" />
-    <div class="product__reviews p-small flex flex-row">
-      <img src="/img/yellowstar.png" height="18" width="18" alt="" />
-      <img src="/img/yellowstar.png" height="18" width="18" alt="" />
-      <img src="/img/yellowstar.png" height="18" width="18" alt="" />
-      <img src="/img/yellowstar.png" height="18" width="18" alt="" />
-      <img src="/img/yellowstar.png" height="18" width="18" alt="" />
-      Reviews (4)
+  <div @click="navigate()" class="cursor-pointer flex-grow">
+    <div class="flex items-center space-x-2">
+      <CheckCircleIcon class="w-4 h-4 text-green-600"/><p class="text-gray-600">In stock</p>
     </div>
-    <p class="item__name">
+    <div class="flex justify-center">  <img src="@/assets/img/laptop.png" alt="" /></div>
+    <div class="flex flex-col">
+      <div class="flex flex-row">
+      <StarIcon class="w-4 h-4 text-yellow-500" /><StarIcon class="w-4 h-4 text-yellow-500" />
+      <StarIcon class="w-4 h-4 text-yellow-500" /><StarIcon class="w-4 h-4 text-yellow-500" />
+      <StarIcon class="w-4 h-4 text-yellow-500" />
+     </div>
+      <p class="text-xs mt-2 text-gray-500">Reviews (4)</p>
+    </div>
+    <p class="text-gray-700 text-medium my-2">
       EX DISPLAY : MSI Pro 16 Flex-036AU 15.6 MULTITOUCH All-In-On...
     </p>
-    <p class="item__price p-semibold-nav">$499.00</p>
+    <p class="mt-3 font-semibold text-gray-900">$499.00</p>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
+import {CheckCircleIcon ,StarIcon } from '@heroicons/vue/solid'
 
-export default defineComponent({
-  components: {},
-  name: "ProductItem",
 
-  setup() {
+
+
     const router = useRouter();
 
     const navigate = () => {
       router.push("/products/" + 2);
     };
 
-    return { navigate };
-  },
-});
 </script>
 
 <style scoped>

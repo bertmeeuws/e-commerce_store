@@ -1,28 +1,29 @@
 <template>
-  <div class="home wrapper">
+  <div class="flex justify-center">
+  <div class="max-w-7xl">
     <img class="img" src="/img/adbig.png" />
-    <div class="top-bar">
-      <h1 class="title h1">New products</h1>
-      <p class="p-small">See all new products</p>
+    <div class="flex justify-between my-8">
+      <h1 class="text-lg text-gray-800 font-semibold cursor-pointer">New products</h1>
+      <p class="text-md text-gray-600 font-normal underline cursor-pointer">See all new products</p>
     </div>
-    <div class="new-products-grid">
+    <div class="flex justify-between my-4 items-center">
       <ProductItem />
-      <ProductItem />
-      <ProductItem />
-      <ProductItem />
-      <ProductItem />
-      <ProductItem />
-    </div>
-    <img class="img img-long" src="/img/adlong.png" />
-    <div class="row first-row">
-      <img class="img row-img" src="/img/custompc.png" />
       <ProductItem />
       <ProductItem />
       <ProductItem />
       <ProductItem />
       <ProductItem />
     </div>
-    <div class="row second-row">
+    <img class="my-12" src="/img/adlong.png" />
+    <div class="flex justify-between items-center space-x-5 mb-12">
+      <img class="" src="/img/custompc.png" />
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
+    </div>
+    <div class="flex justify-between items-center space-x-5 mb-12">
       <img class="img row-img" src="/img/laptops.png" />
       <ProductItem />
       <ProductItem />
@@ -30,7 +31,7 @@
       <ProductItem />
       <ProductItem />
     </div>
-    <div class="row third-row">
+    <div class="flex justify-between items-center space-x-5 mb-12">
       <img class="img row-img" src="/img/desktops.png" />
       <ProductItem />
       <ProductItem />
@@ -38,15 +39,16 @@
       <ProductItem />
       <ProductItem />
     </div>
-    <div class="row sponsors">
-      <img class="img row-img" src='@/assets/img/Frame 22.png' />
-      <img class="img row-img" src='@/assets/img/Frame 23.png' />
-      <img class="img row-img" src='@/assets/img/Frame 24.png' />
-      <img class="img row-img" src='@/assets/img/Frame 25.png' />
-      <img class="img row-img" src='@/assets/img/Frame 26.png' />
-      <img class="img row-img" src='@/assets/img/Frame 27.png' />
-      <img class="img row-img" src='@/assets/img/Frame 34.png' />
+    <div class="flex justify-between items-center mb-12">
+      <img class="" src='@/assets/img/Frame 22.png' />
+      <img class="" src='@/assets/img/Frame 23.png' />
+      <img class="" src='@/assets/img/Frame 24.png' />
+      <img class="" src='@/assets/img/Frame 25.png' />
+      <img class="" src='@/assets/img/Frame 26.png' />
+      <img class="" src='@/assets/img/Frame 27.png' />
+      <img class="" src='@/assets/img/Frame 34.png' />
     </div>
+  </div>
   </div>
 </template>
 
@@ -69,40 +71,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.home {
-  height: 100%;
-  width: 100%;
-}
-.img {
-  max-width: 100%;
-}
-.p-small {
-  cursor: pointer;
-  text-decoration: underline;
-}
-.img-row,
-.row-img {
-  cursor: pointer;
-}
-.row {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: center;
-  align-items: center;
-  margin-top: 3rem;
-}
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: center;
-  align-items: center;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
-.new-products-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 1fr;
-  margin-bottom: 3rem;
-}
+
 </style>
