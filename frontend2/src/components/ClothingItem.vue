@@ -26,7 +26,6 @@ export default defineComponent({
 
   setup(props) {
     const router = useRouter();
-   
 
     const navigate = () =>
       router.push({ path: `/collection/men/${props.item.id}` });

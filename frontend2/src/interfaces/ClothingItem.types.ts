@@ -19,7 +19,6 @@ export type RequestInterface = {
   image: string;
   data: ClothingItem;
   */
- 
 };
 
 export interface ClothingItemState {

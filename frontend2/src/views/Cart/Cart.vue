@@ -11,7 +11,7 @@
         <input class="input" type="number" min="0" v-model="item.count" />
       </div>
     </div>
-    <table class="table" style="width:100%">
+    <table class="table" style="width: 100%">
       <tr class="p-semibold-nav">
         <th>Item</th>
         <th>Price</th>

@@ -1,21 +1,22 @@
 <template>
-  <section class="explorer">
-    <h1 v-if="name" class="h1 title">{{ name }} (20)</h1>
-    <h1 v-if="!name" class="h1 title">Products page (20)</h1>
-    <div class="explorer-grid">
-      <Filter />
-      <ActiveFilters v-bind:activeFilters="Active_filters" />
-      <div class="exlorer-container">
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-        <ProductItem />
-      </div>
+  <h1 v-if="name" class="text-xl">{{ name }} (20)</h1>
+  <h1 v-if="!name" class="text-xl font-semibold my-3">Products page (20)</h1>
+  <div class="grid grid-cols-6">
+    <Filter class="col-span-1 row-span-full" />
+    <ActiveFilters
+      class="row-span-1 col-span-full my-4"
+      :activeFilters="Active_filters"
+    />
+    <div class="col-span-5 grid grid-cols-5 gap-10 grid-rows-4">
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
+      <ProductItem />
     </div>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">
@@ -52,26 +53,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="css" scoped>
-.title {
-  width: 100%;
-}
-.explorer-grid {
-  display: grid;
-  grid-template-rows: 5rem 4rem auto;
-  grid-template-columns: 23.4rem 116.6rem;
-  grid-column-gap: 1rem;
-  grid-template-areas:
-    "back  sort"
-    "filter active-filters"
-    "filter explorer";
-}
-.exlorer-container {
-  grid-area: explorer;
-  border: 0.1rem solid violet;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-</style>
+<style lang="css" scoped></style>

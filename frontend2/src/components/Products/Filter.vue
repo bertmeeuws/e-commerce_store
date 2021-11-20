@@ -1,8 +1,6 @@
 <template>
   <aside class="filters">
-    <h2 class="filters-title">
-      Filters
-    </h2>
+    <h2 class="filters-title">Filters</h2>
   </aside>
 </template>
 

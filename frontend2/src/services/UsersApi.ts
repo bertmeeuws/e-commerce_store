@@ -8,8 +8,7 @@ export abstract class ClothingApi {
   private static usersAxios = Axios.create();
   static async getAllClothing(): Promise<ClothingItem[]> {
     const response = await this.usersAxios.get<ClothingItem[]>("/data.json");
-    
+
     return response.data;
   }
 }
-

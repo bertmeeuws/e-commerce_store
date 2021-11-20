@@ -18,7 +18,6 @@ import { defineComponent, onMounted, reactive } from "vue";
 import { ClothingApi } from "@/services/UsersApi";
 import { useRouter } from "vue-router";
 
-
 export default defineComponent({
   name: "ClothingDetail",
 
@@ -30,7 +29,6 @@ export default defineComponent({
 
     const router = useRouter();
 
-
     const idParam: number = Number(router.currentRoute.value.params.item);
 
     const addToCart = () => {
@@ -40,7 +38,7 @@ export default defineComponent({
     };
 
     onMounted(async () => {
-     /* const response = await ClothingApi.getAllClothing();
+      /* const response = await ClothingApi.getAllClothing();
       const item = response.find((item) => item.id === idParam);
       if (!item) {
         router.push({ path: `/` });

@@ -55,9 +55,13 @@ export default defineComponent({
       data ? (token.token = true) : "";
     });
 
-    const { mutate: registerUser, onDone, error } = useMutation(
+    const {
+      mutate: registerUser,
+      onDone,
+      error,
+    } = useMutation(
       gql`
-        mutation($userRegister: createUserInput!) {
+        mutation ($userRegister: createUserInput!) {
           registerUser(userRegister: $userRegister)
         }
       `,

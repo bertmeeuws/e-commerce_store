@@ -1,14 +1,12 @@
 <template>
-  <div class="active-filters">
+  <div class="flex items-center space-x-3">
     <span
-      class="span p-semibold"
+      class="font-medium border py-2 px-4 rounded border-2"
       :key="index"
       v-for="(filter, index) in activeFilters"
     >
       {{ filter.name }}
-      <span :style="{ color: 'var(--grey)', marginLeft: '0.5rem' }">
-        ({{ filter.quantity }})</span
-      >
+      <span class="text-gray-600"> ({{ filter.quantity }})</span>
     </span>
   </div>
 </template>
