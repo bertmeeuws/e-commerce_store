@@ -1,13 +1,13 @@
 <template>
-  <section class="">
-    <div class="product-navigation wrapper">
-      <div class="nav-left">
+  <Wrapper>
+    <div class="flex items-center justify-between border-b-2 border-t-2 py-4">
+      <div class="flex space-x-8 font-medium">
         <p
           @click="changePage('About product')"
           :style="[
             state.currentPage === 'About product' ? 'color: var(--black)' : '',
           ]"
-          class="p-semibold-nav"
+          class="border-b border-b-2 border-blue-600 cursor-pointer"
         >
           About Product
         </p>
@@ -16,113 +16,78 @@
           :style="[
             state.currentPage === 'Details' ? 'color: var(--black)' : '',
           ]"
-          class="p-semibold-nav"
+          class="border-b border-b-2 border-transparent cursor-pointer"
         >
           Details
         </p>
         <p
           @click="changePage('Specs')"
           :style="[state.currentPage === 'Specs' ? 'color: var(--black)' : '']"
-          class="p-semibold-nav"
+          class="border-b border-b-2 border-transparent cursor-pointer"
         >
           Specs
         </p>
       </div>
-      <form @submit.prevent="addToCart()" class="nav-right">
-        <p class="p-regular">
-          On sale from <span class="p-semibold-nav">$3,299.00</span>
+      <form @submit.prevent="addToCart()" class="flex items-center space-x-3">
+        <p class="">
+          On sale from <span class="font-semibold">$3,299.00</span>
         </p>
-        <input class="input" min="1" value="1" type="number" />
-        <p class="button button-blue">Add to cart</p>
-        <p class="button button-yellow">
-          <img src="@/assets/img/paypal.png" alt="" />
+        <input
+          class="w-16 bg-gray-200 border-none rounded-md"
+          min="1"
+          value="1"
+          type="number"
+        />
+        <p
+          class="
+            rounded-full
+            bg-blue-700
+            text-sm text-white
+            font-medium
+            px-8
+            py-3
+            cursor-pointer
+          "
+        >
+          Add to cart
+        </p>
+        <p
+          class="
+            rounded-full
+            bg-yellow-400
+            text-sm text-white
+            font-medium
+            px-8
+            py-3
+          "
+        >
+          <img src="/img/paypal.png" alt="" />
         </p>
       </form>
     </div>
-    <div class="product-header">
-      <div class="product-header-left">
-        <AboutProduct />
-      </div>
+    <div class="py-4">
+      <AboutProduct />
     </div>
-  </section>
+  </Wrapper>
+  <img src="/img/productdetailbanner.png" />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent, reactive } from "vue";
 import AboutProduct from "../../components/Products/AboutProduct.vue";
+import Wrapper from "@/components/Wrapper.vue";
 
-export default defineComponent({
-  components: { AboutProduct },
-  name: "ProductDetail",
-
-  setup() {
-    const state = reactive<any>({
-      currentPage: "About product",
-    });
-
-    const navigate = () => {};
-
-    const addToCart = () => {};
-
-    const changePage = (page: any) => {
-      state.currentPage = page;
-    };
-
-    return { navigate, addToCart, state, changePage };
-  },
+const state = reactive<any>({
+  currentPage: "About product",
 });
+
+const navigate = () => {};
+
+const addToCart = () => {};
+
+const changePage = (page: any) => {
+  state.currentPage = page;
+};
 </script>
 
-<style scoped>
-.button {
-  font-weight: 600;
-  border-radius: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.button-yellow {
-  background-color: var(--yellow);
-  width: 14rem;
-  height: 5rem;
-}
-.button-blue {
-  background-color: var(--blue);
-  color: white;
-  width: 15rem;
-  height: 5rem;
-}
-.product-navigation {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 2rem;
-}
-.nav-left,
-.nav-right {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.nav-right .input {
-  width: 3rem;
-  text-align: center;
-  font-weight: 600;
-  padding: 1rem;
-  margin-left: 1.5rem;
-}
-.nav-right p {
-  margin-left: 2rem;
-  cursor: pointer;
-}
-.nav-left p {
-  margin-right: 2rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 0.3rem solid transparent;
-  cursor: pointer;
-}
-.nav-left p:hover {
-  border-bottom: 0.3rem solid var(--blue);
-}
-</style>
+<style scoped></style>

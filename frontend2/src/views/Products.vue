@@ -3,7 +3,8 @@
     <img src="/img/ad.png" />
     <div class="flex justify-center">
       <div class="max-w-7xl">
-        <Breadcrumbs :categories="categories" />
+        <img src="/img/productsbanner.png" class="mb-8 cursor-pointer" />
+        <Breadcrumbs class="my-6" :categories="categories" />
         <Explorer :name="pageName" />
       </div>
     </div>
