@@ -1,7 +1,7 @@
 <template>
   <Wrapper>
     <div class="flex items-center justify-between border-b-2 border-t-2 py-4">
-      <div class="flex space-x-8 font-medium">
+      <div class="flex space-x-8 font-medium text-sm">
         <p
           @click="changePage('About product')"
           :style="[
@@ -28,7 +28,7 @@
           Specs
         </p>
       </div>
-      <form @submit.prevent="addToCart()" class="flex items-center space-x-3">
+      <form @submit.prevent="addToCart()" class="flex items-center space-x-3 text-sm">
         <p class="">
           On sale from <span class="font-semibold">$3,299.00</span>
         </p>

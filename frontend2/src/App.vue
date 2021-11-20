@@ -11,14 +11,12 @@
     <router-view />
   </div>
 </template>
-<script lang="ts">
+<script setup lang="ts">
 import { defineComponent } from "vue";
 import NavBar from "@/components/NavBar.vue"; // @ is an alias to /src
 
-export default defineComponent({
-  name: "App",
-  components: { NavBar },
-});
+document.body.classList.add('min-h-full')
+
 </script>
 
 <style>
@@ -32,4 +30,5 @@ export default defineComponent({
 body {
   font-family: "Poppins", sans-serif;
 }
+
 </style>

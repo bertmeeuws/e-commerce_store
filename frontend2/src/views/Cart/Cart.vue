@@ -1,143 +1,148 @@
 <template>
-  <div class="wrapper">
-    <Breadcrumbs v-bind:categories="categories" />
-    <h1 class="h1">Shopping cart</h1>
-    <p v-if="cart.length === 0">Geen items</p>
-    <div class="cart--content" v-else>
-      <div class="cart--item" v-for="(item, index) in cart" :key="index">
-        <button @click="deleteItem(item.id)">X</button>
-        <img class="cart--item--img" :src="item.image" alt="" />
-        <p>{{ item.title }}</p>
-        <input class="input" type="number" min="0" v-model="item.count" />
-      </div>
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-semibold tracking-tight text-gray-900">Shopping Cart</h1>
+      <form class="mt-12">
+        <div>
+          <h2 class="sr-only">Items in your shopping cart</h2>
+
+          <ul role="list" class="border-t border-b border-gray-200 divide-y divide-gray-200">
+            <li v-for="(product, productIdx) in products" :key="product.id" class="flex py-6 sm:py-10">
+              <div class="flex-shrink-0">
+                <img :src="product.imageSrc" :alt="product.imageAlt" class="w-24 h-24 rounded-lg object-center object-cover sm:w-32 sm:h-32" />
+              </div>
+
+              <div class="relative ml-4 flex-1 flex flex-col justify-between sm:ml-6">
+                <div>
+                  <div class="flex justify-between sm:grid sm:grid-cols-2">
+                    <div class="pr-6">
+                      <h3 class="text-sm">
+                        <a :href="product.href" class="font-medium text-gray-700 hover:text-gray-800">
+                          {{ product.name }}
+                        </a>
+                      </h3>
+                      <p class="mt-1 text-sm text-gray-500">
+                        {{ product.color }}
+                      </p>
+                      <p v-if="product.size" class="mt-1 text-sm text-gray-500">
+                        {{ product.size }}
+                      </p>
+                    </div>
+
+                    <p class="text-sm font-medium text-gray-900 text-right">{{ product.price }}</p>
+                  </div>
+
+                  <div class="mt-4 flex items-center sm:block sm:absolute sm:top-0 sm:left-1/2 sm:mt-0">
+                    <label :for="`quantity-${productIdx}`" class="sr-only">Quantity, {{ product.name }}</label>
+                    <select :id="`quantity-${productIdx}`" :name="`quantity-${productIdx}`" class="block max-w-full rounded-md border border-gray-300 py-1.5 text-base leading-5 font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                    </select>
+
+                    <button type="button" class="ml-4 text-sm font-medium text-blue-600 hover:text-blue-500 sm:ml-0 sm:mt-3">
+                      <span>Remove</span>
+                    </button>
+                  </div>
+                </div>
+
+                <p class="mt-4 flex text-sm text-gray-700 space-x-2">
+                  <CheckIcon v-if="product.inStock" class="flex-shrink-0 h-5 w-5 text-green-500" aria-hidden="true" />
+                  <ClockIcon v-else class="flex-shrink-0 h-5 w-5 text-gray-300" aria-hidden="true" />
+                  <span>{{ product.inStock ? 'In stock' : `Ships in ${product.leadTime}` }}</span>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Order summary -->
+        <div class="mt-10 sm:ml-32 sm:pl-6">
+          <div class="bg-gray-50 rounded-lg px-4 py-6 sm:p-6 lg:p-8">
+            <h2 class="sr-only">Order summary</h2>
+
+            <div class="flow-root">
+              <dl class="-my-4 text-sm divide-y divide-gray-200">
+                <div class="py-4 flex items-center justify-between">
+                  <dt class="text-gray-600">
+                    Subtotal
+                  </dt>
+                  <dd class="font-medium text-gray-900">
+                    $99.00
+                  </dd>
+                </div>
+                <div class="py-4 flex items-center justify-between">
+                  <dt class="text-gray-600">
+                    Shipping
+                  </dt>
+                  <dd class="font-medium text-gray-900">
+                    $5.00
+                  </dd>
+                </div>
+                <div class="py-4 flex items-center justify-between">
+                  <dt class="text-gray-600">
+                    Tax
+                  </dt>
+                  <dd class="font-medium text-gray-900">
+                    $8.32
+                  </dd>
+                </div>
+                <div class="py-4 flex items-center justify-between">
+                  <dt class="text-base font-medium text-gray-900">
+                    Order total
+                  </dt>
+                  <dd class="text-base font-medium text-gray-900">
+                    $112.32
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+          <div class="mt-10">
+            <button type="submit" class="w-full bg-blue-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500">Checkout</button>
+          </div>
+
+          <div class="mt-6 text-sm text-center text-gray-500">
+            <p>
+              or <a href="#" class="text-blue-600 font-medium hover:text-blue-500">Continue Shopping<span aria-hidden="true"> &rarr;</span></a>
+            </p>
+          </div>
+        </div>
+      </form>
     </div>
-    <table class="table" style="width: 100%">
-      <tr class="p-semibold-nav">
-        <th>Item</th>
-        <th>Price</th>
-        <th>Qty</th>
-        <th>Subtotal</th>
-      </tr>
-      <tr>
-        <td class="first-column">
-          <img :src="require('@/assets/img/laptop.png')" alt="" />
-          MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER, 32GB RAM,
-          1TB SSD, Windows 10 Home, Gaming Keyboard and Mouse 3 Years Warranty
-        </td>
-        <td class="p-semibold-nav">$4,349.00</td>
-        <td><input class="input" value="1" /></td>
-        <td class="p-semibold-nav">$13,047.00</td>
-      </tr>
-      <tr>
-        <td class="first-column">
-          <img :src="require('@/assets/img/laptop.png')" alt="" />
-          MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER, 32GB RAM,
-          1TB SSD, Windows 10 Home, Gaming Keyboard and Mouse 3 Years Warranty
-        </td>
-        <td class="p-semibold-nav">$4,349.00</td>
-        <td><input class="input" value="1" /></td>
-        <td class="p-semibold-nav">$13,047.00</td>
-      </tr>
-      <tr>
-        <td class="first-column">
-          <img :src="require('@/assets/img/laptop.png')" alt="" />
-          MSI MEG Trident X 10SD-1012AU Intel i7 10700K, 2070 SUPER, 32GB RAM,
-          1TB SSD, Windows 10 Home, Gaming Keyboard and Mouse 3 Years Warranty
-        </td>
-        <td class="p-semibold-nav">$4,349.00</td>
-        <td><input class="input" value="1" /></td>
-        <td class="p-semibold-nav">$13,047.00</td>
-      </tr>
-    </table>
-  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
-import { useStore } from "vuex";
-import Breadcrumbs from "../../components/Breadcrumbs.vue";
+<script setup lang="ts">
+import { CheckIcon, ClockIcon } from '@heroicons/vue/solid'
+import Wrapper from '@/components/Wrapper.vue'
 
-export default defineComponent({
-  name: "Cart",
-  components: { Breadcrumbs },
-
-  setup() {
-    const store = useStore();
-
-    const deleteItem = (id: number) => {
-      store.commit("deleteFromCart", id);
-    };
-    const categories: string[] = ["Home", "Login"];
-
-    return {
-      cart: computed(() => store.state.cart),
-      deleteItem,
-      categories,
-    };
+const products = [
+  {
+    id: 1,
+    name: 'Nomad Tumbler',
+    href: '#',
+    price: '$35.00',
+    color: 'White',
+    inStock: true,
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-03.jpg',
+    imageAlt: 'Insulated bottle with white base and black snap lid.',
   },
-});
+  {
+    id: 2,
+    name: 'Basic Tee',
+    href: '#',
+    price: '$32.00',
+    color: 'Sienna',
+    inStock: true,
+    size: 'Large',
+    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg',
+    imageAlt: "Front of men's Basic Tee in sienna.",
+  },
+  // More products...
+]
+
 </script>
-
-<style scoped>
-.table .input {
-  width: 3rem;
-  text-align: center;
-}
-.table {
-  text-align: left;
-  border-collapse: collapse;
-  margin-top: 3rem;
-}
-.table .first-column {
-  max-width: 42rem;
-  display: flex;
-  justify-content: flex-start;
-  line-height: 2rem;
-}
-
-.table .first-column img {
-  margin-right: 2.5rem;
-}
-.table,
-td {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  vertical-align: top;
-}
-.table th {
-  padding-bottom: 1rem;
-}
-.table tr {
-  border-bottom: 0.1rem solid var(--grey);
-}
-.cart--item {
-  display: flex;
-  width: 50%;
-  flex-direction: row;
-}
-.cart--item--img {
-  width: 20px;
-  height: auto;
-  margin-right: 2rem;
-}
-.cart--content {
-  width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.cart--item button {
-  margin: 0 auto;
-  background: none;
-  outline: none;
-  border: none;
-  font-weight: 600;
-  color: red;
-  cursor: pointer;
-}
-.input {
-  margin-left: 30px;
-}
-</style>

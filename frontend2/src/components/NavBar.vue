@@ -33,7 +33,7 @@
               class="text-sm cursor-pointer"
               v-for="authNav in authNavigation"
               :key="authNav.name"
-              @click="navigate('/register')"
+              @click="navigate(authNav.route)"
             >
               {{ authNav.name }}
             </p>
@@ -80,9 +80,9 @@ const navigation = [
 ];
 
 const authNavigation = [
-  { name: "Register", route: "login" },
-  { name: "Login", route: "login" },
-  { name: "Cart", route: "login" },
+  { name: "Register", route: "/register" },
+  { name: "Login", route: "/login" },
+  { name: "Cart", route: "/cart" },
 ];
 
 const navigate = (url: RouteLocationRaw) => {
